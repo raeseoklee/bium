@@ -78,7 +78,7 @@ public enum Guardrails {
         guard !std.contains("/../"), !std.hasSuffix("/..") else { throw GuardrailError.traversal(path) }
 
         let components = std.split(separator: "/").map(String.init)
-        // "/Users/irae/x" is three components — the shallowest we ever accept.
+        // "/Users/you/x" is three components — the shallowest we ever accept.
         guard components.count >= 3 else { throw GuardrailError.tooShallow(std) }
 
         if protectedPaths().contains(std) { throw GuardrailError.protectedPath(std) }

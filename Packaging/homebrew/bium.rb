@@ -3,20 +3,19 @@
 # This file belongs in a separate tap repository named `homebrew-bium`, at
 # `Formula/bium.rb`, so users can install with:
 #
-#   brew tap OWNER/bium
+#   brew tap raeseoklee/bium
 #   brew install bium
 #
-# Before the first release, replace OWNER with the GitHub account and fill in
-# the sha256 of the release tarball:
+# Before the first release, fill in the sha256 of the release tarball:
 #
-#   curl -sL https://github.com/OWNER/bium/archive/refs/tags/v0.1.0.tar.gz | shasum -a 256
+#   curl -sL https://github.com/raeseoklee/bium/archive/refs/tags/v0.1.0.tar.gz | shasum -a 256
 class Bium < Formula
   desc "Reclaim disk space on a Mac, honestly"
-  homepage "https://github.com/OWNER/bium"
-  url "https://github.com/OWNER/bium/archive/refs/tags/v0.1.0.tar.gz"
+  homepage "https://github.com/raeseoklee/bium"
+  url "https://github.com/raeseoklee/bium/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "REPLACE_WITH_TARBALL_SHA256"
   license "MIT"
-  head "https://github.com/OWNER/bium.git", branch: "main"
+  head "https://github.com/raeseoklee/bium.git", branch: "main"
 
   depends_on :macos
   depends_on xcode: ["15.0", :build]

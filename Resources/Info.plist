@@ -11,6 +11,11 @@
   <key>CFBundleShortVersionString</key><string>__VERSION__</string>
   <key>CFBundleVersion</key><string>__VERSION__</string>
   <key>LSMinimumSystemVersion</key><string>14.0</string>
+  <!-- The .lproj directories in Resources are what declare the supported
+       languages. Without them macOS treats the app as English-only and renders
+       the AppKit-provided menus (About, Services, Hide, Quit, Edit, Window,
+       Help) in English even when the window itself is Korean. -->
+  <key>CFBundleDevelopmentRegion</key><string>en</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
   <key>NSHighResolutionCapable</key><true/>
   <key>NSHumanReadableCopyright</key><string>MIT License</string>

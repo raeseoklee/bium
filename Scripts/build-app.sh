@@ -30,6 +30,14 @@ version=$(sed -n 's/.*static let version = "\(.*\)".*/\1/p' Sources/BiumCore/Loc
 [ -n "$version" ] || { echo "버전을 읽지 못했습니다"; exit 1; }
 sed "s/__VERSION__/$version/g" Resources/Info.plist > "$app/Contents/Info.plist"
 echo "버전 $version"
+# Declaring the localizations is what makes macOS render the standard menus in
+# Korean; the directories only have to exist for the language to count as
+# supported.
+for lang in en ko; do
+  mkdir -p "$app/Contents/Resources/$lang.lproj"
+  cp "Resources/$lang.lproj/InfoPlist.strings" "$app/Contents/Resources/$lang.lproj/"
+done
+
 [ -f Resources/AppIcon.icns ] && cp Resources/AppIcon.icns "$app/Contents/Resources/AppIcon.icns" \
   || echo "주의: Resources/AppIcon.icns 가 없어 기본 아이콘이 사용됩니다."
 

@@ -115,7 +115,7 @@ struct Options {
     }
 }
 
-let version = "0.1.0"
+let version = Bium.version
 
 var helpText: String {
     L10n.language == .ko ? helpKO : helpEN

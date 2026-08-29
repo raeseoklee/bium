@@ -1,5 +1,15 @@
 import Foundation
 
+/// Package-wide constants.
+///
+/// The version lives here so the CLI, the app bundle's Info.plist and the
+/// Homebrew formulae cannot drift apart: `Scripts/build-app.sh` substitutes
+/// this value into the plist, and `Scripts/release.sh` checks it against the
+/// git tag before anything is published.
+public enum Bium {
+    public static let version = "0.1.1"
+}
+
 /// The languages `bium` speaks.
 ///
 /// English is the default because the tool is published for a general audience;

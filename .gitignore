@@ -1,0 +1,8 @@
+.build/
+.swiftpm/
+*.xcodeproj
+.DS_Store
+
+# Local agent/tool state, not part of the project
+.omc/
+.claude/

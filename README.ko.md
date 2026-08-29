@@ -4,8 +4,13 @@
 계산하고, 추측으로 판단하지 않으며, 읽을 권한이 없었던 디렉터리는 비어 있다고 보고하는
 대신 읽지 못했다고 알려 줍니다.
 
-의존성이 없습니다. Xcode를 설치하지 않아도 명령줄 도구(Command Line Tools)와 Swift 6.1
-만으로 빌드됩니다.
+```sh
+brew install raeseoklee/tap/bium
+```
+
+탭이 사전 빌드된 유니버설 바이너리(arm64 와 x86_64)를 배포하므로, 설치할 때 Swift
+도구 모음이 필요하지 않습니다. 소스에서 직접 빌드하는 경우에도 명령줄 도구(Command Line
+Tools)와 Swift 6.1 만 있으면 되고, 어느 쪽이든 Xcode를 설치할 필요는 없습니다.
 
 ```sh
 bium scan             # 조사만 수행하며 아무것도 삭제하지 않습니다
@@ -156,12 +161,22 @@ bium clean --exclude trash
 bium scan --json                # 기계가 읽을 수 있는 형식으로 출력합니다
 ```
 
-## 빌드 방법
+## 소스에서 빌드하는 방법
 
 ```sh
 swift build -c release
 swift run bium-tests            # 384건의 검증을 실행합니다
 ./Scripts/install.sh            # ~/.local/bin 에 설치합니다
+```
+
+릴리스에 포함되는 유니버설 바이너리를 직접 만들려면 아키텍처별로 빌드한 다음 합쳐야
+합니다. `swift build --arch` 옵션은 Xcode에 포함된 xcbuild를 필요로 하기 때문입니다.
+
+```sh
+swift build -c release --triple arm64-apple-macosx
+swift build -c release --triple x86_64-apple-macosx
+lipo -create -output bium .build/{arm64,x86_64}-apple-macosx/release/bium
+codesign --force --sign - bium
 ```
 
 테스트는 `.testTarget` 이 아니라 일반 실행 파일로 만들었습니다. XCTest와 swift-testing이

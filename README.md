@@ -3,7 +3,13 @@
 Reclaims disk space on a Mac — counts hard links once, never guesses, and tells you
 which directories it was not allowed to read instead of reporting them as empty.
 
-No dependencies. Builds with the Command Line Tools and Swift 6.1; Xcode not required.
+```sh
+brew install raeseoklee/tap/bium
+```
+
+The tap ships a prebuilt universal binary (arm64 + x86_64), so installing needs
+no Swift toolchain. Building from source needs only the Command Line Tools and
+Swift 6.1; Xcode is not required either way.
 
 ```sh
 bium scan             # survey only, deletes nothing
@@ -142,12 +148,22 @@ bium scan --json                # machine-readable
 Rule ids are stable and English in every locale, so `--only`/`--exclude` and the
 JSON output are safe to script against.
 
-## Building
+## Building from source
 
 ```sh
 swift build -c release
 swift run bium-tests            # 384 checks
 ./Scripts/install.sh            # installs to ~/.local/bin
+```
+
+To produce the universal binary a release ships, build each architecture and
+join them, since `swift build --arch` needs Xcode's xcbuild:
+
+```sh
+swift build -c release --triple arm64-apple-macosx
+swift build -c release --triple x86_64-apple-macosx
+lipo -create -output bium .build/{arm64,x86_64}-apple-macosx/release/bium
+codesign --force --sign - bium
 ```
 
 Tests are a plain executable rather than a `.testTarget`: XCTest and swift-testing

@@ -161,6 +161,21 @@ bium clean --exclude trash
 bium scan --json                # 기계가 읽을 수 있는 형식으로 출력합니다
 ```
 
+## 앱
+
+명령줄 도구와 함께 SwiftUI로 만든 앱도 있습니다. 같은 규칙과 같은 안전 등급을 보여 주며,
+SAFE 등급은 미리 선택되어 있고 그보다 높은 등급은 직접 선택해야 합니다. 명령줄에서
+`clean` 이 동작하는 방식과 같습니다.
+
+```sh
+./Scripts/build-app.sh     # dist/Bium.app 을 조립합니다
+open dist/Bium.app
+```
+
+Xcode 대신 스크립트로 번들을 조립하므로, 명령줄 도구만 있어도 프로젝트를 빌드할 수
+있습니다. `Scripts/make-icon.sh` 는 1024×1024 PNG를 `Resources/AppIcon.icns` 로 변환하고,
+그 PNG는 `Scripts/DrawIcon.swift` 가 그립니다.
+
 ## 소스에서 빌드하는 방법
 
 ```sh

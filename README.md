@@ -148,6 +148,22 @@ bium scan --json                # machine-readable
 Rule ids are stable and English in every locale, so `--only`/`--exclude` and the
 JSON output are safe to script against.
 
+## The app
+
+There is a SwiftUI front end alongside the CLI. It shows the same rules and the
+same safety levels, with SAFE pre-selected and everything above it left for you
+to tick deliberately, exactly as `clean` behaves on the command line.
+
+```sh
+./Scripts/build-app.sh     # assembles dist/Bium.app
+open dist/Bium.app
+```
+
+The bundle is put together by a script rather than by Xcode, so the project
+stays buildable with only the Command Line Tools. `Scripts/make-icon.sh` turns a
+1024x1024 PNG into `Resources/AppIcon.icns`, and `Scripts/DrawIcon.swift` draws
+that PNG.
+
 ## Building from source
 
 ```sh

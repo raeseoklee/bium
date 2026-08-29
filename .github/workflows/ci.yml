@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: swift build -c release
+
+      # The suite pins its own language, so this also proves the locale
+      # handling does not leak into results.
+      - name: Test
+        run: swift run bium-tests
+
+      - name: Test under a Korean locale
+        run: LANG=ko_KR.UTF-8 swift run bium-tests
+
+      # scan must never modify anything; running it in CI catches a rule that
+      # accidentally deletes during resolution.
+      - name: Smoke test
+        run: |
+          ./.build/release/bium --help
+          ./.build/release/bium list
+          ./.build/release/bium scan --no-actions
+          ./.build/release/bium clean --dry-run --yes --no-actions

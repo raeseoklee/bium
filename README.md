@@ -90,6 +90,11 @@ English by default. Korean when `LANG`/`LC_ALL` starts with `ko`, or set
 `BIUM_LANG=ko` to override just this tool. An unrecognised locale falls back to
 English rather than producing a half-translated screen.
 
+When no such variable is set, the system language decides. That matters for the
+app: launching from Finder or the Dock goes through LaunchServices, which passes
+no `LANG` at all, so without that fallback the window would sit in English on a
+machine set to Korean. An explicit variable always wins over the system setting.
+
 ## Delegated actions
 
 Some things are safer handed to the tool that owns them than deleted as files.

@@ -9,21 +9,38 @@ public enum Language: String, Sendable, CaseIterable {
     case en
     case ko
 
-    /// Resolves the language from the environment.
+    /// Resolves the language from the environment, then from the system's own
+    /// language preference.
     ///
     /// `BIUM_LANG` wins so a user can override just this tool, then the standard
-    /// POSIX chain. Anything unrecognised falls back to English rather than
-    /// guessing: a half-translated screen is worse than a consistent one.
-    public static func detect(_ environment: [String: String] = ProcessInfo.processInfo.environment) -> Language {
+    /// POSIX chain. `preferredLanguages` is the fallback because an app launched
+    /// from Finder or the Dock goes through LaunchServices, which passes no
+    /// `LANG` at all; without it the window would sit in English on a machine
+    /// set to Korean.
+    ///
+    /// An explicit but unsupported locale stops at English rather than falling
+    /// through to the system preference: someone who asked for French should not
+    /// be handed Korean, and a half-translated screen is worse than a consistent
+    /// one.
+    public static func detect(
+        _ environment: [String: String] = ProcessInfo.processInfo.environment,
+        preferredLanguages: [String] = Locale.preferredLanguages
+    ) -> Language {
         for key in ["BIUM_LANG", "LC_ALL", "LC_MESSAGES", "LANG"] {
             guard let raw = environment[key], !raw.isEmpty else { continue }
-            // "ko_KR.UTF-8" -> "ko"
-            let code = raw.prefix { $0 != "_" && $0 != "." && $0 != "-" }.lowercased()
-            if let match = Language(rawValue: String(code)) { return match }
-            // An explicit but unknown locale still means "not Korean".
+            if let match = language(from: raw) { return match }
             return .en
         }
+        for identifier in preferredLanguages {
+            if let match = language(from: identifier) { return match }
+        }
         return .en
+    }
+
+    /// "ko_KR.UTF-8" and "ko-KR" both reduce to "ko".
+    private static func language(from identifier: String) -> Language? {
+        let code = identifier.prefix { $0 != "_" && $0 != "." && $0 != "-" }.lowercased()
+        return Language(rawValue: String(code))
     }
 }
 

@@ -3,6 +3,8 @@ import BiumCore
 
 func runLocalizationTests() {
     Check.suite("language/detection") {
+        // preferredLanguages is passed explicitly throughout so these results do
+        // not depend on the system language of whoever runs the suite.
         let cases: [([String: String], Language, String)] = [
             ([:], .en, "no locale set at all"),
             (["LANG": "ko_KR.UTF-8"], .ko, "LANG=ko_KR.UTF-8"),
@@ -19,8 +21,26 @@ func runLocalizationTests() {
             (["LC_MESSAGES": "ko_KR.UTF-8", "LANG": "en_US.UTF-8"], .ko, "LC_MESSAGES beats LANG"),
         ]
         for (env, expected, note) in cases {
-            Check.equal(Language.detect(env), expected, note)
+            Check.equal(Language.detect(env, preferredLanguages: []), expected, note)
         }
+    }
+
+    // An app launched from Finder or the Dock inherits no LANG, so without this
+    // fallback the window would be English on a machine set to Korean.
+    Check.suite("language/system preference fallback") {
+        Check.equal(Language.detect([:], preferredLanguages: ["ko-KR", "en-KR"]), .ko,
+                    "a Korean system with no LANG")
+        Check.equal(Language.detect([:], preferredLanguages: ["en-US"]), .en,
+                    "an English system with no LANG")
+        Check.equal(Language.detect([:], preferredLanguages: ["fr-FR", "ko-KR"]), .ko,
+                    "the first supported entry wins")
+        Check.equal(Language.detect([:], preferredLanguages: ["fr-FR"]), .en,
+                    "an unsupported system language falls back to English")
+        // An explicit choice must not be overridden by the system preference.
+        Check.equal(Language.detect(["LANG": "en_US.UTF-8"], preferredLanguages: ["ko-KR"]), .en,
+                    "LANG beats the system preference")
+        Check.equal(Language.detect(["LANG": "fr_FR.UTF-8"], preferredLanguages: ["ko-KR"]), .en,
+                    "an explicit unsupported locale stops at English")
     }
 
     Check.suite("language/string selection") {

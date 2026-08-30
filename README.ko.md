@@ -4,6 +4,8 @@
 계산하고, 추측으로 판단하지 않으며, 읽을 권한이 없었던 디렉터리는 비어 있다고 보고하는
 대신 읽지 못했다고 알려 줍니다.
 
+![안전 등급별로 묶인 검사 결과를 보여 주는 bium 앱](docs/screenshot-ko.png)
+
 ```sh
 brew install raeseoklee/tap/bium
 ```

@@ -18,6 +18,22 @@ struct ScanView: View {
                         }
                     }
 
+                    // A scan walks the whole home directory, so without this the
+                    // window sits empty for tens of seconds with only a small
+                    // toolbar spinner to say anything is happening.
+                    if model.groups.isEmpty && model.isBusy {
+                        VStack(spacing: 12) {
+                            ProgressView().controlSize(.large)
+                            Text(model.strings.scanning).font(.callout.weight(.medium))
+                            Text(model.progress ?? "")
+                                .font(.caption.monospaced()).foregroundStyle(.secondary)
+                                .lineLimit(1).truncationMode(.middle)
+                                .frame(maxWidth: 460)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 120)
+                    }
+
                     if model.groups.isEmpty && !model.isBusy {
                         ContentUnavailableView(
                             model.strings.nothingFound,
@@ -151,7 +167,7 @@ private struct GroupRow: View {
                         .fixedSize(horizontal: false, vertical: true)
                     ForEach(group.items.prefix(12), id: \.path) { item in
                         HStack(spacing: 8) {
-                            Text(item.path).font(.caption2.monospaced())
+                            Text(displayPath(item.path)).font(.caption2.monospaced())
                                 .lineLimit(1).truncationMode(.middle)
                             Spacer()
                             if let note = item.note {
@@ -257,6 +273,7 @@ private struct Footer: View {
             .buttonStyle(.borderedProminent)
             .tint(model.permanentDelete ? Palette.caution : .accentColor)
             .disabled(model.isBusy || model.selectedGroups.isEmpty)
+            .opacity(model.isBusy && model.selectedGroups.isEmpty ? 0.5 : 1)
         }
         .padding(.horizontal, 20).padding(.vertical, 12)
         .background(.bar)

@@ -121,3 +121,14 @@ public enum Guardrails {
         return selfStat.st_dev != parentStat.st_dev
     }
 }
+
+/// Shortens a path for display by writing the home directory as `~`.
+///
+/// Absolute paths carry the account name, which ends up in screenshots, bug
+/// reports and pasted terminal output. `~` is also simply what people recognise.
+public func displayPath(_ path: String) -> String {
+    let home = Guardrails.home
+    if path == home { return "~" }
+    guard path.hasPrefix(home + "/") else { return path }
+    return "~" + path.dropFirst(home.count)
+}

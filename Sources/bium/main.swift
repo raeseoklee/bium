@@ -148,7 +148,7 @@ func runEmptyTrash(_ options: Options) -> Int32 {
 
     print("\n\(options.dryRun ? t("Would have emptied", "비웠을 용량") : t("Emptied", "비운 용량")): \(Ansi.green(formatBytes(freed)))")
     for failure in failures {
-        print("  \(Ansi.yellow(t("skipped", "건너뜀"))) \(Terminal.shorten(failure.path, to: 60)) — \(Ansi.dim(failure.error ?? ""))")
+        print("  \(Ansi.yellow(t("skipped", "건너뜀"))) \(Terminal.shorten(displayPath(failure.path), to: 60)) — \(Ansi.dim(failure.error ?? ""))")
     }
     if !options.dryRun {
         let after = DiskInfo.current()

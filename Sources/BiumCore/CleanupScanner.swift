@@ -117,7 +117,7 @@ public struct CleanupScanner {
                 for root in unreadableRoots(of: rule) {
                     skipped.append(SkippedRule(
                         ruleID: rule.id,
-                        reason: t("unreadable (needs Full Disk Access): \(root)", "읽을 수 없음(전체 디스크 접근 권한 필요): \(root)")
+                        reason: t("unreadable (needs Full Disk Access): \(displayPath(root))", "읽을 수 없음(전체 디스크 접근 권한 필요): \(displayPath(root))")
                     ))
                 }
             }

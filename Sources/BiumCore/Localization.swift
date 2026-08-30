@@ -7,7 +7,7 @@ import Foundation
 /// this value into the plist, and `Scripts/release.sh` checks it against the
 /// git tag before anything is published.
 public enum Bium {
-    public static let version = "0.1.3"
+    public static let version = "0.1.4"
 }
 
 /// The languages `bium` speaks.

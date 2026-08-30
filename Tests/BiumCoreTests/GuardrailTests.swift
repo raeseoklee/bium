@@ -56,3 +56,18 @@ func runGuardrailTests() {
         Check.rejects("\(link)/secret.txt", root: realRoot, "reaching through the link, out of scope")
     }
 }
+
+/// Absolute paths carry the account name into screenshots and pasted output.
+func runDisplayPathTests() {
+    let home = Guardrails.home
+
+    Check.suite("displayPath") {
+        Check.equal(displayPath("\(home)/Library/Caches/x"), "~/Library/Caches/x", "inside home")
+        Check.equal(displayPath(home), "~", "home itself")
+        Check.equal(displayPath("/Library/Caches/x"), "/Library/Caches/x", "outside home is left alone")
+        // A sibling directory that merely starts with the same characters is
+        // not inside home and must not be rewritten.
+        Check.equal(displayPath(home + "-backup/x"), home + "-backup/x", "a same-prefix sibling")
+        Check.expect(!displayPath("\(home)/Library").contains("/Users/"), "no account name survives")
+    }
+}

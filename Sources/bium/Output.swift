@@ -73,7 +73,7 @@ enum Output {
                         let itemSize = formatBytes(item.bytes).leftPadded(to: 9)
                         let path = item.kind == .action
                             ? "$ " + item.path
-                            : Terminal.shorten(item.path, to: max(30, width - 24))
+                            : Terminal.shorten(displayPath(item.path), to: max(30, width - 24))
                         var line = "      \(Ansi.dim(itemSize))  \(path)"
                         if let note = item.note { line += Ansi.dim("  (\(note))") }
                         print(line)
@@ -132,7 +132,7 @@ enum Output {
             print("  \(color(group.safety, group.safety.label.rightPadded(to: 8)))\(Ansi.bold(size))  \(group.title) \(Ansi.dim(t("(\(group.items.count) items)", "(\(group.items.count)개)")))")
             if verbose {
                 for item in group.items {
-                    let path = item.kind == .action ? "$ " + item.path : Terminal.shorten(item.path, to: max(30, Ansi.width - 20))
+                    let path = item.kind == .action ? "$ " + item.path : Terminal.shorten(displayPath(item.path), to: max(30, Ansi.width - 20))
                     print("            \(Ansi.dim(path))")
                 }
             }
@@ -150,7 +150,7 @@ enum Output {
             print("\n\(Ansi.yellow(t("\(report.failures.count) item(s) skipped", "건너뛴 항목 \(report.failures.count)개")))")
             let shown = verbose ? report.failures : Array(report.failures.prefix(10))
             for failure in shown {
-                print("  \(Ansi.dim(Terminal.shorten(failure.path, to: max(30, Ansi.width - 40))))")
+                print("  \(Ansi.dim(Terminal.shorten(displayPath(failure.path), to: max(30, Ansi.width - 40))))")
                 print("    \(Ansi.dim(failure.error ?? t("unknown reason", "알 수 없는 이유")))")
             }
             if shown.count < report.failures.count {

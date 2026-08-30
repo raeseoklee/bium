@@ -3,6 +3,8 @@
 Reclaims disk space on a Mac — counts hard links once, never guesses, and tells you
 which directories it was not allowed to read instead of reporting them as empty.
 
+![The bium app showing a scan grouped by safety level](docs/screenshot-en.png)
+
 ```sh
 brew install raeseoklee/tap/bium
 ```

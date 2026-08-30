@@ -7,6 +7,7 @@ L10n.language = .en
 
 runLocalizationTests()
 runGuardrailTests()
+runDisplayPathTests()
 try runVersionedPathsTests()
 try runScannerTests()
 try runSizeCalculatorTests()

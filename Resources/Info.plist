@@ -18,6 +18,6 @@
   <key>CFBundleDevelopmentRegion</key><string>en</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
   <key>NSHighResolutionCapable</key><true/>
-  <key>NSHumanReadableCopyright</key><string>MIT License</string>
+  <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Raeseok Lee. MIT License.</string>
 </dict>
 </plist>
